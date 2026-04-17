@@ -24,8 +24,8 @@ export const ourFileRouter = {
     })
     .onUploadComplete(async ({ metadata, file }) => {
       // Este código se ejecuta en el servidor una vez que se sube el archivo
-     
-      
+      console.log("Upload complete for userId:", metadata.userId);
+      console.log("file url", file.ufsUrl);
 
       // Lo que se retorna aquí estará disponibe en `onClientUploadComplete` callback
       return { 
