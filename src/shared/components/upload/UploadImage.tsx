@@ -25,7 +25,7 @@ export default function UploadImage() {
                 }}
                 config ={{
                     cn: twMerge,
-                    mode: 'manual'
+                    mode: 'auto'
                 }}
             />
             {uploadedImage && (
