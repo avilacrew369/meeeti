@@ -1,3 +1,4 @@
+import { User } from "better-auth";
 import { CommunityInput } from "../schemas/communitySchema";
 import { communityRepository, ICommunityRepository } from "./CommunityRepository";
 
@@ -13,6 +14,11 @@ class CommunityService {
         })
         return community
     }
+     async getUserCommunity(user: User) {
+
+        const communities = await this.communityRepository.findByUser(user.id, 10)
+    }
+
 }
 
 export const communityService = new CommunityService(communityRepository)

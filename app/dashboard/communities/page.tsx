@@ -1,3 +1,4 @@
+import MyCommunities from "@/src/features/communities/components/MyCommunities";
 import Heading from "@/src/shared/components/typography/Heading";
 import { generatePageTitle } from "@/src/shared/utils/metadata";
 import { Metadata } from "next";
@@ -23,6 +24,7 @@ export default function CommunitiesPage() {
     className="mt-5 block lg:inline-block text-center bg-pink-500 hover:bg-pink-600 transition-colors text-xs lg:text-xl text-white py-3 px-10  font-bold"
   >Comunidades a las que te uniste</Link>
 </div>
+    <MyCommunities />
     </>
   )
 }

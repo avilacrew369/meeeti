@@ -1,7 +1,7 @@
 {
   "version": "8",
   "dialect": "postgres",
-  "id": "bf601a14-c95b-48ef-82c6-c16bb80f05c5",
+  "id": "a7d9730d-1988-4a90-b6e9-1bf86db5ad0e",
   "prevIds": [
     "00000000-0000-0000-0000-000000000000"
   ],
@@ -240,6 +240,19 @@
       "generated": null,
       "identity": null,
       "name": "description",
+      "entityType": "columns",
+      "schema": "public",
+      "table": "communities"
+    },
+    {
+      "type": "varchar(100)",
+      "typeSchema": null,
+      "notNull": false,
+      "dimensions": 0,
+      "default": null,
+      "generated": null,
+      "identity": null,
+      "name": "image",
       "entityType": "columns",
       "schema": "public",
       "table": "communities"

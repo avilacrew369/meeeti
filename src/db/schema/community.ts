@@ -5,6 +5,7 @@ export const communities = pgTable('communities', {
     id: uuid('id').primaryKey().defaultRandom(),
     name: varchar('name', { length: 255 }).notNull(),
     description: text('description').notNull(),
+    image: varchar('image', {length: 100}),
     createdAt: timestamp('created_at').defaultNow(),
     creteBy: text('creted_by').notNull()
    
