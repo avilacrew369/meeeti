@@ -8,9 +8,11 @@ import { FormError } from "../forms";
 
 export default function UploadImage() {
 
-    const {formState: {errors},setValue, clearErrors} = useFormContext<CommunityInput>()
+    const {formState: {errors},setValue, clearErrors, getValues} = useFormContext<CommunityInput>()
 
         const [uploadedImage, setUploadedImage] = useState('')
+
+        const currentImage = getValues('image') ? getValues('image') : null
     
   return (
     <>
@@ -45,9 +47,25 @@ export default function UploadImage() {
                                 alt="Imagen"
                                 width={300}
                                 height={200}
+                                priority
                             />
                             
                             </>
+            )}
+            {currentImage && !uploadedImage && (
+                   <>
+                            <p className="text-lg font-bold">Imagen Actual</p>
+                            <Image 
+                                src={currentImage}
+                                alt="Imagen"
+                                width={300}
+                                height={200}
+                                priority
+                                
+                            />
+                            
+                            </>
+
             )}
     
     </>

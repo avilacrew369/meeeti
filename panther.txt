@@ -20,3 +20,20 @@ npm i drizzle-orm @neondatabase/serverless dotenv
 npm i -D drizzle-kit tsx
 
 UPLOADTHING_TOKEN='eyJhcGlLZXkiOiJza19saXZlX2FmZGVjNzM0NWRmMmZkMWM5YTBmZDYzYTZkNmJmNTczMmUxYWMwMzg0OTEwY2Y3MDkwN2EyY2M3MzcwYjU3MDMiLCJhcHBJZCI6ImN4YWtwMzNjc2EiLCJyZWdpb25zIjpbInNlYTEiXX0='
+
+
+  if(communities) {
+      <ul>
+
+      </ul>
+   } 
+     <p
+      className='text-center mt-10 text-lg'
+        >No hay comunidades Aun
+        <Link
+          href={'/dashboard/communities/create'}
+          className='text-orange-500 font-bold'
+        >Comienza creando una
+        </Link>
+
+      </p>
