@@ -4,6 +4,7 @@ import { communityRepository, ICommunityRepository } from "./CommunityRepository
 import { CommunityPolicy } from "../policies/CommunityPolicy";
 import { MembershipPolicy } from "../policies/MembershipPolicy";
 import { notFound } from "next/navigation";
+import { error } from "console";
 
 class CommunityService {
     constructor (
@@ -71,6 +72,11 @@ class CommunityService {
     }
     async updateCommunity(data: CommunityInput, communityId: string, user: User) {
         const community = await this.getCommunity(communityId)
+
+        if(!CommunityPolicy.canEdit(user, community)){
+            throw new Error('No tienes permisos pare actualizar esta comunidad ')
+        }
+        await this.communityRepository.update(data, communityId)
     }
 }
 

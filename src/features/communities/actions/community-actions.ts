@@ -2,6 +2,8 @@
 import { CommunityInput, CommunitySchema } from "../schemas/communitySchema";
 import { requireAuth } from "@/src/lib/auth-server";
 import { communityService } from "../services/CommunityService";
+import { succeed } from "effect/Config";
+import { error } from "console";
 
 
 export async function createCommunityAction(input: CommunityInput) {
@@ -46,6 +48,11 @@ export async function editCommunityAction(input: CommunityInput, id: string) {
     }
 
     await communityService.updateCommunity(data.data, id, session.user)
+
+    return {
+        success: 'Comunidad actualizada correctamente',
+        error: ''
+    }
 
 
 }
