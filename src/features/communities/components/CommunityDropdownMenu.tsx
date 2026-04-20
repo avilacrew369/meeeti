@@ -11,7 +11,8 @@ type Props = {
 
 export default function CommunityDropdownMenu({community}: Props) {
 
-  const { setOpen } = useCommunityStore()
+  const setOpen = useCommunityStore(state => state.setOpen)
+  const setCommunity = useCommunityStore(state => state.setCommunity)
 
   return (
     <Menu as="div" className="relative flex-none">
@@ -45,6 +46,7 @@ export default function CommunityDropdownMenu({community}: Props) {
             type="button"
             onClick={() => {
               setOpen(true)
+              setCommunity(community)
             }}
             className="block text-left w-full px-3 py-1 text-sm/6 text-red-600 data-focus:bg-gray-50 data-focus:outline-hidden cursor-pointer"
           >

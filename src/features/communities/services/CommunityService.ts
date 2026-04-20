@@ -1,10 +1,15 @@
-import { User } from "better-auth";
+import { success, User } from "better-auth";
 import { CommunityInput } from "../schemas/communitySchema";
 import { communityRepository, ICommunityRepository } from "./CommunityRepository";
 import { CommunityPolicy } from "../policies/CommunityPolicy";
 import { MembershipPolicy } from "../policies/MembershipPolicy";
 import { notFound } from "next/navigation";
 import { error } from "console";
+import { checkPassword } from "@/src/shared/utils/auth";
+import { deleteUTFiles } from "@/src/lib/uploadthing-server";
+import { communities } from "@/src/db/schema";
+import { context } from "effect/Sink";
+import { permission } from "process";
 
 class CommunityService {
     constructor (
@@ -49,8 +54,17 @@ class CommunityService {
         if(!community) notFound()
         return community
     }
-    async getCommunityDetails(communityId: string, user: User) {
+
+    async getCommunityDetails(communityId: string, user?: User) {
         const community = await this.getCommunity(communityId)
+
+        if(!user) {
+            return {
+                data: community,
+                context: null,
+                permission: null
+            }
+        }
 
         const isMember = false
         const isAdmin = CommunityPolicy.isAdmin(user, community)
@@ -70,6 +84,7 @@ class CommunityService {
                 }
             }
     }
+
     async updateCommunity(data: CommunityInput, communityId: string, user: User) {
         const community = await this.getCommunity(communityId)
 
@@ -78,6 +93,34 @@ class CommunityService {
         }
         await this.communityRepository.update(data, communityId)
     }
+
+    async deleteCommunity(communityId: string, password: string, user: User) {
+        // obtener communidad
+        const community = await this.getCommunity(communityId)
+
+        //Revisar permisos
+        if(!CommunityPolicy.canDelete(user, community)){
+            throw new Error('No tienes permiso para eliminar esta communidad')
+        }
+        // verificar password
+        const isValidPassword = await checkPassword(password)
+            if(!community.image) return
+            if(!isValidPassword) {
+            return {
+                error: 'El password es incorrecto',
+                success: ''
+            }
+        }
+        // Eliminar
+        await this.communityRepository.delete(communityId)
+        await deleteUTFiles(community.image)
+        return {
+            error: '',
+            success: 'Comunidad Eliminada correctamente'
+        }
+
+    }
+
 }
 
 export const communityService = new CommunityService(communityRepository)

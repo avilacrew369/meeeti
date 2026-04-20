@@ -3,7 +3,8 @@ import { CommunityInput, CommunitySchema } from "../schemas/communitySchema";
 import { requireAuth } from "@/src/lib/auth-server";
 import { communityService } from "../services/CommunityService";
 import { succeed } from "effect/Config";
-import { error } from "console";
+import { Console, error } from "console";
+import { CheckPasswordInput, CheckPasswordSchema } from "../../auth/schemas/authSchema";
 
 
 export async function createCommunityAction(input: CommunityInput) {
@@ -55,4 +56,25 @@ export async function editCommunityAction(input: CommunityInput, id: string) {
     }
 
 
+}
+
+export async function deletCommunityAction(input: CheckPasswordInput, id: string) {
+     const { session } = await requireAuth()
+    if (!session) {
+        return {
+            error: 'Hubo un error',
+            success: ''
+        }
+    }
+
+    const data = CheckPasswordSchema.safeParse(input)
+    if (!data.success) {
+        return {
+            error: 'Hubo un error',
+            success: ''
+        }
+    }
+
+    const response =  await communityService.deleteCommunity(id, input.password, session.user)
+    return response
 }

@@ -22,9 +22,11 @@ export default function CommunityItem({community}: Props) {
           />
         </div>
         <div className="min-w-0 flex-auto">
-          <Link   href={`/`} className="hover:underline font-bold text-lg">
-          {name}
-          </Link>
+          <Link   
+            target="_blank"
+            href={`/communities/${community.data.id}`} 
+            className="hover:underline font-bold text-lg">
+          {name} </Link>
           <p className="text-gray-600 text-sm line-clamp-2">{description}</p>
           <p className="text-gray-600 text-sm"></p>
         </div>
