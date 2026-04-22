@@ -1,9 +1,13 @@
 import Link from "next/link";
 import Logo from "./Logo";
 import GuestNavigation from "./GuestNavigation";
+import { requireAuth } from "@/src/lib/auth-server";
+import UserNavegation from "./UserNavegation";
 
 
-export default function Headers() {
+export default  async function Headers() {
+  const { isAuth } = await requireAuth()
+
   return (
     <header className="border-b border-gray-200">
   <div className="md:flex md:justify-between md:items-center max-w-7xl mx-auto p-5 lg:px-0">
@@ -14,7 +18,7 @@ export default function Headers() {
         </div>
       </Link>
     </div>
-    <GuestNavigation />
+    { isAuth ? <UserNavegation /> : <GuestNavigation /> }
   </div>
 </header>
   )

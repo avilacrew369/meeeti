@@ -8,9 +8,7 @@ export default async function CommunityPage(props: PageProps<'/communities/[id]'
 
   const { id } = await props.params
   const session = await getServerSession()
-  console.log(session?.user)
   const community = await communityService.getCommunityDetails(id, session?.user)
-  console.log(community)
   return (
     <>
       <main className="max-w-7xl mx-auto space-y-5 p-10 lg:p-0 mt-10">

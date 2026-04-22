@@ -1,6 +1,6 @@
 import { db } from "@/src/db"
 import { InserCommunity, SelectCommunity } from "../types/community.types"
-import { communities, } from "@/src/db/schema"
+import { community, } from "@/src/db/schema"
 import { eq } from "drizzle-orm"
 import { CommunityInput } from "../schemas/communitySchema"
 
@@ -15,35 +15,35 @@ export interface ICommunityRepository {
 class CommunityRepository implements ICommunityRepository {
     async create(data: InserCommunity) {
 
-     const [result ] =   await db.insert(communities).values(data).returning()
+     const [result ] =   await db.insert(community).values(data).returning()
      return result 
     }
 
     async findByUser(userId: string, limit=10): Promise<SelectCommunity[]> {
-        const community = await db
+        const communities = await db
                                     .select()
-                                    .from(communities)
-                                    .where(eq(communities.creteBy, userId) )
+                                    .from(community)
+                                    .where(eq(community.creteBy, userId) )
                                     .limit(limit)
-        return community
+        return communities
     }
 
     async findById(communityId: string): Promise<SelectCommunity | undefined> {
         const [result] = await db
                     .select()
-                    .from(communities)
-                    .where(eq(communities.id, communityId))
+                    .from(community)
+                    .where(eq(community.id, communityId))
                     .limit(1)
         return result
     }
 
     async update(data: CommunityInput, communityId: string) {
-         await db.update(communities).set({...data
-        }).where(eq(communities.id, communityId))
+         await db.update(community).set({...data
+        }).where(eq(community.id, communityId))
     }
 
     async delete(communityId: string): Promise<void> {
-        await db.delete(communities).where(eq(communities.id, communityId))
+        await db.delete(community).where(eq(community.id, communityId))
     }
     
     

@@ -7,7 +7,7 @@ import { notFound } from "next/navigation";
 import { error } from "console";
 import { checkPassword } from "@/src/shared/utils/auth";
 import { deleteUTFiles } from "@/src/lib/uploadthing-server";
-import { communities } from "@/src/db/schema";
+import { community } from "@/src/db/schema";
 import { context } from "effect/Sink";
 import { permission } from "process";
 
@@ -55,17 +55,16 @@ class CommunityService {
         return community
     }
 
-    async getCommunityDetails(communityId: string, user?: User) {
+    async getCommunityDetails(communityId: string, user: User | null | undefined) {
         const community = await this.getCommunity(communityId)
 
         if(!user) {
             return {
                 data: community,
                 context: null,
-                permission: null
+                permissions: null
             }
         }
-
         const isMember = false
         const isAdmin = CommunityPolicy.isAdmin(user, community)
            return {

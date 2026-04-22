@@ -21,7 +21,7 @@ export default function EditCommunity({community} : Props) {
             defaultValues: {
                name,
                description,
-               image: image || ''
+               image
                
             }
         })

@@ -18,11 +18,11 @@ export async function generateMetadata(
     description: result.description,
     openGraph: {
       title: 'Compartir Communidad',
-      images: result.image ? [
+      images: [
         {
           url: result.image
         }
-      ] : []
+      ]
     }
   }
 }
@@ -35,7 +35,7 @@ export default async function EditCommunityPage(props: PageProps<'/dashboard/com
     const { id } =await props.params
 
     const community = await communityService.getCommunityDetails(id, session.user)
-    if(!community.permissions.canEdit) redirect('/dashboard/communities')
+    if(!community.permissions?.canEdit) redirect('/dashboard/communities')
   return (
     <>
     <Heading>Editar Comunidad : {community.data.name}</Heading>

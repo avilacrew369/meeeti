@@ -18,9 +18,15 @@ CREATE TABLE "communities" (
 	"id" uuid PRIMARY KEY DEFAULT gen_random_uuid(),
 	"name" varchar(255) NOT NULL,
 	"description" text NOT NULL,
-	"image" varchar(100),
-	"created_at" timestamp DEFAULT now(),
+	"image" varchar(100) NOT NULL,
+	"created_at" timestamp DEFAULT now() NOT NULL,
 	"creted_by" text NOT NULL
+);
+--> statement-breakpoint
+CREATE TABLE "community_members" (
+	"community_id" uuid NOT NULL,
+	"user_id" text NOT NULL,
+	"joined_at" timestamp DEFAULT now()
 );
 --> statement-breakpoint
 CREATE TABLE "sessions" (
@@ -57,4 +63,6 @@ CREATE INDEX "accounts_userId_idx" ON "accounts" ("user_id");--> statement-break
 CREATE INDEX "sessions_userId_idx" ON "sessions" ("user_id");--> statement-breakpoint
 CREATE INDEX "verifications_identifier_idx" ON "verifications" ("identifier");--> statement-breakpoint
 ALTER TABLE "accounts" ADD CONSTRAINT "accounts_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
+ALTER TABLE "community_members" ADD CONSTRAINT "community_members_community_id_communities_id_fkey" FOREIGN KEY ("community_id") REFERENCES "communities"("id") ON DELETE CASCADE;--> statement-breakpoint
+ALTER TABLE "community_members" ADD CONSTRAINT "community_members_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;--> statement-breakpoint
 ALTER TABLE "sessions" ADD CONSTRAINT "sessions_user_id_users_id_fkey" FOREIGN KEY ("user_id") REFERENCES "users"("id") ON DELETE CASCADE;

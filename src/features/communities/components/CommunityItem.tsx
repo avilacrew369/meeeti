@@ -13,7 +13,7 @@ export default function CommunityItem({community}: Props) {
       <div className="flex items-start min-w-0 gap-x-4">
         <div className="size-32 flex-none overflow-hidden">
           <Image
-            src={image || ''}
+            src={image}
             alt={`Imagen Comunidad ${name}`}
             className="object-cover w-full h-full"
             width={250}
