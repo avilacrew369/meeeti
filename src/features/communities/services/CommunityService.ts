@@ -10,10 +10,12 @@ import { deleteUTFiles } from "@/src/lib/uploadthing-server";
 import { community } from "@/src/db/schema";
 import { context } from "effect/Sink";
 import { permission } from "process";
+import { IMenbershipRepository, membershipRepository } from "./MembershipRepository";
 
 class CommunityService {
     constructor (
-        private communityRepository: ICommunityRepository
+        private communityRepository: ICommunityRepository,
+        private membershipRepository: IMenbershipRepository
 
     ){}
     async createCommunity(data : CommunityInput, userId: string) {
@@ -65,7 +67,7 @@ class CommunityService {
                 permissions: null
             }
         }
-        const isMember = false
+        const isMember = await this.membershipRepository.isMember(community.id, user.id)
         const isAdmin = CommunityPolicy.isAdmin(user, community)
            return {
                 data: community,
@@ -122,4 +124,4 @@ class CommunityService {
 
 }
 
-export const communityService = new CommunityService(communityRepository)
+export const communityService = new CommunityService(communityRepository, membershipRepository)
