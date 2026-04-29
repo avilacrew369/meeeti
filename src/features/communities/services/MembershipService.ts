@@ -1,14 +1,16 @@
-import { success, User } from "better-auth";
+import { User } from "better-auth";
 import { IMenbershipRepository, membershipRepository } from "./MembershipRepository";
 import { communityRepository, ICommunityRepository } from "./CommunityRepository";
 import { MembershipPolicy } from "../policies/MembershipPolicy";
 import { CommunityPolicy } from "../policies/CommunityPolicy";
+import { INotificationService, notificationServise } from "../../notifications/services/NotificationService";
 
 
 class MembershipService {
     constructor(
         private membershipRepository: IMenbershipRepository,
-        private communityRepository: ICommunityRepository
+        private communityRepository: ICommunityRepository,
+        private notificationService: INotificationService
     ) { }
 
     async toggleMembership(communityId: string, user: User) {
@@ -20,6 +22,14 @@ class MembershipService {
         //si puede unirse
         if (MembershipPolicy.canJoin(user, community, isMember)) {
             await this.membershipRepository.addMember(communityId, user.id)
+
+            await this.notificationService.createAndNotify({
+                userId: community.creteBy,
+                actorName: user.name,
+                message: 'Se unio a comunidad',
+                target: community.name,
+               
+            })
 
             return {
                 success: true,
@@ -54,8 +64,10 @@ class MembershipService {
         const enriched = await Promise.all(joined.map(async ({community}) => {
                    const isMember = true
                    const isAdmin = CommunityPolicy.isAdmin(user, community)
+                   const memberCount = await this.membershipRepository.getMemberCount(community.id)
                    return {
                        data: community,
+                       memberCount,
                        context: {
                            isMember,
                            isAdmin
@@ -74,4 +86,7 @@ class MembershipService {
     }
 }
 
-export const membershipService = new MembershipService(membershipRepository, communityRepository)
+export const membershipService = new MembershipService(
+                    membershipRepository, 
+                    communityRepository, 
+                    notificationServise )

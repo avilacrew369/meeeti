@@ -1,6 +1,6 @@
 import { db } from "@/src/db"
 import { communityMembers } from "@/src/db/schema"
-import { and, eq } from "drizzle-orm"
+import { and, eq, count } from "drizzle-orm"
 import { JoinedCommunity } from "../types/community.types"
 
 export interface IMenbershipRepository {
@@ -8,6 +8,7 @@ export interface IMenbershipRepository {
     removeMember(communityId: string, userId: string) : Promise<void>
     isMember(communityId: string, userId: string) : Promise<boolean>
     findJoinedCommunities(iserId : string) : Promise <JoinedCommunity[]>
+    getMemberCount(communityId: string) : Promise<number>
 }
 
 class MembershipRepository implements IMenbershipRepository{
@@ -54,6 +55,17 @@ class MembershipRepository implements IMenbershipRepository{
                         }
                     })
           return result          
+   }
+
+   async getMemberCount(communityId: string): Promise<number> {
+        const [result] = await db
+                        .select({total: count()})
+                        .from(communityMembers)
+                        .where(eq(communityMembers.communityId, communityId ))
+
+            return result.total
+
+       
    }
 }
 

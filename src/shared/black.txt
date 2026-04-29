@@ -1,2 +1,10 @@
 8 de marzo
 en este dia se hiso git
+
+
+try {
+    const community = await communityService.getCommunityDetails(id);
+    // Manejar los detalles de la comunidad aquí
+} catch (error) {
+    console.error('Error retrieving community details:', error);
+}

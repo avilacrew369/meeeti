@@ -1,6 +1,6 @@
 
 export default function Logo() {
   return (
-    <img src="/logo.svg" alt="logo meeti" />
+    <img src="/logo.svg" alt="logo meeti" loading="eager"/>
   )
 }
